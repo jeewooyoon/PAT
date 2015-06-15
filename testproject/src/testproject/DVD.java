@@ -1,0 +1,40 @@
+package testproject;
+
+import java.io.Serializable;
+import java.util.Calendar;
+
+public class DVD extends Book implements Serializable{
+	private int runningtime;
+	private String genre;
+	private int age;
+	public DVD(String kind,String isbn, String title, String author, int price, int pub_year, String pub_company, int pop, int search_cnt, String rental, Calendar rental_time, int runningtime, String genre, int age) {
+		super(kind,isbn, title, author, price, pub_year, pub_company, pop, search_cnt,rental, rental_time);
+		this.runningtime = runningtime;
+		this.genre =genre;
+		this.age=age;
+	}
+	
+	public int getAge() {
+		return age;
+	}
+	public String getGenre() {
+		return genre;
+	}
+	public int getRunningtime() {
+		return runningtime;
+	}
+	
+	public void setAge(int age) {
+		this.age=age;
+	}
+	public void setGenre(String genre) {
+		this.genre=genre;
+	}
+	public void setRunningtime(int runningtime) {
+		this.runningtime=runningtime;
+	}
+	public String dvd_string() {
+		return getKind()+"  isbn :"+getIsbn()+"  "+"제목 :"+getTitle()+"  "+"저자 :"+getAuthor()+"  "+"가격 :"+getPrice()+"  "+"출판년도 :"+getYear()+"\n"+"출판사 :"+getCompany()+"  "+"인기도 :"+getPop()+"  "+"대출가능여부"+getRental()+"  "+"상영시간 :"+getRunningtime()+"  연령제한 :"+getAge()+"  장르 :"+getGenre()+"\n";
+	}
+	
+}
