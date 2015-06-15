@@ -1,0 +1,43 @@
+package 도서관1;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
+import 도서관리프로그램실습과제.Book;
+
+public class BookObjectOutputTest{
+
+	public static void main(String[] args) {
+		FileOutputStream fout = null;
+		ObjectOutputStream oos = null;
+
+		ArrayList list = new ArrayList();
+		Book b1 = new Book("a0001", "자바완성", "홍길동", 10000,2009,"개미와베짱이",5);
+		Book b2 = new Book("a0002", "스트럿츠", "김유신", 20000,2014,"한양대학교",4);
+		Book b3 = new Book("a0003", "기초 EJB", "윤지우", 25000,2008,"부산광역시",2);
+		list.add(b1);
+		list.add(b2);
+		list.add(b3);
+		 
+		try{
+			fout = new FileOutputStream("booklist.dat");
+			oos = new ObjectOutputStream(fout);
+			
+			oos.writeObject(list);
+			oos.reset();
+			oos.writeObject(list);
+			oos.reset();
+			
+			System.out.println("저장완료.");
+			
+		}catch(Exception ex){
+		}finally{
+			try{
+				oos.close();
+				fout.close();
+			}catch(IOException ioe){}
+		} // finally
+	} // main end
+} // class end

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;JavaGUI/src/scoreGUI&apos;&#x0A;- Original project: &apos;실습&apos;&#x0A;- Destination element: &apos;JavaGUI/src/scoreGUI&apos;&#x0A;- Original elements:&#x0A;     Score.java&#x0A;     ScoreManager.java" description="Copy compilation units" destination="=JavaGUI/src&lt;scoreGUI" element1="/src&lt;{Score.java" element2="/src&lt;{ScoreManager.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1431994510260" units="2" version="1.0"/>
+</session>

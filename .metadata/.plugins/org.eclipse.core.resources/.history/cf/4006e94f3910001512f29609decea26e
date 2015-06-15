@@ -1,0 +1,14 @@
+package testproject;
+
+public class User {
+	private String username;
+	private String bookname;
+	private 
+	public String getBookname() {
+		return bookname;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+}

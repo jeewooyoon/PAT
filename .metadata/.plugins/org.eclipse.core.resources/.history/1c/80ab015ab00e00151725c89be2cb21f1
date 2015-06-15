@@ -1,0 +1,13 @@
+package testproject;
+
+public class ComicBooks extends Book {
+
+	public BookMethod(String isbn, String title, String author, int price,
+			int pub_year, String pub_company, int pop, int search_cnt,
+			String rental, String rental_time) {
+		super(isbn, title, author, price, pub_year, pub_company, pop, search_cnt,
+				rental, rental_time);
+		// TODO Auto-generated constructor stub
+	}
+
+}

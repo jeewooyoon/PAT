@@ -1,0 +1,621 @@
+package testproject;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.Set;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+public class BookManager extends JFrame {
+	Scanner scan = new Scanner(System.in);
+	int cnt=0;
+	ArrayList<Book> bookList = new ArrayList<Book>();
+	Container contentPane;
+	String[] labels = { "isbn", "제목", "저자", "가격", "출판년도", "출판사","인기도" }; 
+	int[] widths = { 10, 15, 10, 10, 10, 10, 10 };
+	public HashMap<String,String> id_book = new<String,String> HashMap();
+	
+	private JTextField[] fields;
+	String sel=null;
+	JFrame frame1 = new JFrame ("도서추가창");
+	JFrame frame2 = new JFrame ("DVD추가창");
+	JTextField j1 = new JTextField("isbn",19);
+	JTextField j2 = new JTextField("제목",8);
+	JTextField j3 = new JTextField("저자",8);
+	JTextField j4 = new JTextField("가격",8);
+	JTextField j5 = new JTextField("출판년도",8);
+	JTextField j6 = new JTextField("출판사",8);
+	JTextField j7 = new JTextField("인기도",8);
+	JTextField j8 = new JTextField("상영시간(DVD)",8);
+	JTextField j9 = new JTextField("장르(DVD)",8);
+	JTextField j10 = new JTextField("제한연령(DVD)",8);
+	JButton addcomplete  = new JButton("추가");
+	JTextArea j = new JTextArea(30,40);
+	public BookManager() {
+		setTitle("도서관리시스템");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
+		contentPane = getContentPane(); 
+		JPanel p1 = new JPanel(new GridLayout(6,2));
+		JButton add = new JButton("추가하기");
+		p1.add(add);
+		JButton modify = new JButton("도서정보수정");
+		p1.add(modify);
+		JButton delete  = new JButton("삭제하기");
+		p1.add(delete);
+		JButton search  = new JButton("검색하기");
+		p1.add(search);
+		JButton input   = new JButton("파일읽기");
+		p1.add(input);
+		JButton output  = new JButton("파일저장");
+		p1.add(output);
+		JButton ranking  = new JButton("검색현황");
+		p1.add(ranking);
+		JButton showall  = new JButton("리스트출력");
+		p1.add(showall);
+		JButton rental  = new JButton("대여하기");
+		p1.add(rental);
+		JButton returned  = new JButton("반납하기");
+		p1.add(returned);
+		JButton inform  = new JButton("회원정보");
+		p1.add(inform);
+		JButton version  = new JButton("버전정보");
+		p1.add(version);
+		JPanel p2 = new JPanel(new BorderLayout());
+		
+		
+		JScrollPane jp = new JScrollPane(j);
+		p2.add(jp);
+		jp.getVerticalScrollBar().setValue(jp.getVerticalScrollBar().getMaximum());
+		j.setEditable(false);
+		
+		contentPane.add(p1, BorderLayout.EAST);
+		contentPane.add(p2, BorderLayout.CENTER);
+		
+		setSize(850,550);
+		setVisible(true);
+		version.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				version();
+			}
+		});
+		returned.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				returned();
+			}
+		});
+		inform.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inform();
+			}
+		});
+		rental.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rental();			
+			}
+		});
+		showall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showall();
+			}
+		});
+		ranking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ranking();	
+			}
+		});
+		add.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				add();
+			} 
+		});
+		addcomplete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addcomplete();
+			}
+		});
+		
+		//수정
+		modify.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				modify();
+			} 
+		});
+		delete.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				delete();
+			} 
+		});
+		//수정
+		search.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				search();
+			} 
+		});
+		input.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				input();
+			} 
+		});
+		output.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				output();
+			}
+		});
+	}
+	public void version() {
+		j.setText("");
+		j.append("[도서/DVD관리 프로그램]\n제작자 : 윤 지 우\n버전정보 : 1.0v\n");
+	}//버전정보표
+	public void inform() {
+		String id = (String)JOptionPane.showInputDialog(j,"회원의 이름을 입력해주세요.\n","회원정보창",JOptionPane.PLAIN_MESSAGE);
+		Collection collection = id_book.keySet();
+		Iterator iter = collection.iterator();
+		int temp=0;
+		j.setText("");
+		while(iter.hasNext()) {
+			String book = (String)iter.next();
+			String name = (String)id_book.get(book);
+			if(name.equals(id)) {
+				temp++;
+			}
+		}
+		if(temp==0) {
+			j.append("회원정보가 저장 되어있지 않습니다.\n");
+		}else {
+			Collection collection1 = id_book.keySet();
+			Iterator iter1 = collection1.iterator();
+			j.append("대여하신 목록입니다.\n");
+			
+			while(iter1.hasNext()) {
+				String book = (String)iter1.next();
+				String name = (String)id_book.get(book);
+				if(name.equals(id)) {
+					for(int i=0;i<cnt;i++) {
+						if(bookList.get(i).getTitle().equals(book)) {
+							j.append(bookList.get(i).getRentalTime()+book+"\n");
+							break;
+						}
+					}
+					
+				}
+			}
+		}
+	}//회원정보(대여한목록)
+	public void addcomplete() {
+		j.setText("");
+		if(sel.equals("BOOK")) {
+			String isbn =j1.getText();
+			String title = j2.getText();
+			String author = j3.getText();
+			int price = Integer.parseInt(j4.getText()); 
+			int pub_year = Integer.parseInt(j5.getText());
+			String pub_company = j6.getText();
+			int popularity = Integer.parseInt(j7.getText());
+			bookList.add(new Book("BOOK",isbn, title, author, price, pub_year, pub_company, popularity,0,"Y","0"));
+			j.append("isbn :"+isbn+"\n"+"제목 :"+title+"\n"+"저자 :"+author+"\n"+"가격 :"+price+"\n"+"출판년도 :"+pub_year+"\n"+"출판사 :"+pub_company+"\n"+"인기도 :"+popularity+"\n"+"도서추가완료");
+			cnt++;
+			j1.setText("isbn");
+			j2.setText("제목");
+			j3.setText("저자");
+			j4.setText("가격");
+			j5.setText("출판년도");
+			j6.setText("출판사");
+			j7.setText("인기도");
+			
+		}else {
+			String isbn =j1.getText();
+			String title = j2.getText();
+			String author = j3.getText();
+			int price = Integer.parseInt(j4.getText()); 
+			int pub_year = Integer.parseInt(j5.getText());
+			String pub_company = j6.getText();
+			int popularity = Integer.parseInt(j7.getText());
+			int runningtime= Integer.parseInt(j8.getText());
+			String genre=j9.getText();
+			int age=Integer.parseInt(j10.getText());
+			bookList.add(new DVD("DVD",isbn, title, author, price, pub_year, pub_company, popularity,0,"Y","0", runningtime, genre, age));
+			j.append("isbn :"+isbn+"\n"+"제목 :"+title+"\n"+"저자 :"+author+"\n"+"가격 :"+price+"\n"+"출판년도 :"+pub_year+"\n"+"출판사 :"+pub_company+"\n"+"인기도 :"+popularity+"\n"+"상영시간 :"+runningtime+"\n"+"제한연령 :"+age+"\n"+"장르 :"+genre+"\n"+"DVD추가완료");
+			cnt++;
+			j1.setText("isbn");
+			j2.setText("제목");
+			j3.setText("저자");
+			j4.setText("가격");
+			j5.setText("출판년도");
+			j6.setText("출판사");
+			j7.setText("인기도");
+			j8.setText("상영시간");
+			j9.setText("제한연령");
+			j10.setText("장르");
+			
+		}
+	}
+	public void add() {
+		j.setText("");
+		Object[] menu = {"BOOK","DVD"};
+		sel = (String)JOptionPane.showInputDialog(j,"책이나 DVD를 선택후 추가항목을 작성해주세요.\n","요소선택창",JOptionPane.PLAIN_MESSAGE,null, menu,"BOOK");
+		if(sel.equals("BOOK")) {
+			JPanel p3 = new JPanel(new GridLayout(6,2));
+			p3.add(j1);
+			p3.add(j2);
+			p3.add(j3);
+			p3.add(j4);
+			p3.add(j5);
+			p3.add(j6);
+			p3.add(j7);
+			p3.add(addcomplete);
+			frame1.getContentPane().add (p3);
+	        frame1.pack();
+	        frame1.setVisible (true);
+	        
+			
+			
+		}else {
+			JPanel p3 = new JPanel(new GridLayout(6,2));
+			p3.add(j1);
+			p3.add(j2);
+			p3.add(j3);
+			p3.add(j4);
+			p3.add(j5);
+			p3.add(j6);
+			p3.add(j7);
+			p3.add(j8);
+			p3.add(j9);
+			p3.add(j10);
+			p3.add(addcomplete);
+			frame2.getContentPane().add (p3);
+	        frame2.pack();
+	        frame2.setVisible (true);
+	        
+		}
+		
+	}
+	public void rental() {
+		int temp=0;
+		String id = (String)JOptionPane.showInputDialog(j,"도서/DVD를 대여하겠습니다. 이름을 입력해주세요.\n","도서/DVD대여창",JOptionPane.PLAIN_MESSAGE);
+		String title = (String)JOptionPane.showInputDialog(j,"도서/DVD를 대여하겠습니다. 대여하실 도서/DVD의 제목을 입력해주세요.\n","도서/DVD대여창",JOptionPane.PLAIN_MESSAGE);
+		for(int i=0;i<bookList.size();i++) {
+			if(bookList.get(i).getTitle().equals(title)) {
+				temp++;
+				if(bookList.get(i).getRental().equals("Y")) {
+					id_book.put(title, id);
+					bookList.get(i).setRental("N");
+					Date today = Calendar.getInstance().getTime();
+
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					
+					String dTime = formatter.format(today);
+
+					bookList.get(i).setRentalTime(dTime);
+					j.setText("");
+					j.append("대여가 완료되었습니다.\n");
+					break;
+
+				}else if(bookList.get(i).getRental().equals("N")){
+					j.setText("");
+					j.append("이미 대여가 완료되었습니다.\n");
+					break;
+				}
+			}
+		}
+		if(temp==0) {
+			j.setText("");
+			j.append("해당제목을 가진 도서/DVD가 없습니다.\n");
+		}
+
+	}
+	public void showall() {
+		j.setText("");
+		j.append("전체 리스트를 출력하겠습니다.\n현재까지 추가된 DVD와 도서는 총 "+cnt+"권 입니다.\n");
+		for(int i=0;i<bookList.size();i++) {
+			j.append("----------------------------------------------------------------------\n");
+			if(bookList.get(i).getKind().equals("BOOK")) {
+				j.append(bookList.get(i).toString());
+			}else {
+				j.append(((DVD) bookList.get(i)).dvd_string());
+			}
+		}
+	}
+ 	public void ranking() {
+		j.setText("");
+		int check[] = new int[bookList.size()];
+		int rank[] = new int[bookList.size()];
+		for(int z=0;z<bookList.size();z++) {
+			rank[z]=bookList.get(z).getSearch_cnt();
+		}
+		
+		int i,k;
+		int iMin;
+		for (k=0;k<bookList.size()-1;k++) {
+		    iMin = k;
+		    for ( i=k+1; i<bookList.size();i++) {
+		        if (rank[i]>rank[iMin]) {
+		            iMin = i;
+		        }
+		    }
+		    if(iMin!=k) {
+		    	int tmp=rank[k];
+		    	rank[k]=rank[iMin];
+		    	rank[iMin]=tmp;
+		    }
+		}
+		for(i=0;i<bookList.size();i++) {
+			for(k=0;k<bookList.size();k++) {
+				if(rank[i]==bookList.get(k).getSearch_cnt()&&check[k]!=1) {
+					rank[i]=-1;
+					check[k]=1;
+					j.append("----------------------------------------------------------------------\n");
+					j.append(bookList.get(k).toString2()+"총"+bookList.get(k).getSearch_cnt()+"번 검색되었습니다.\n");
+				}
+			}
+		}
+	}
+	public void modify() {
+		
+		Object[] menu = {"isbn", "제목", "저자","가격","출판년도","출판사","인기도","상영시간","연령제한","장르"};
+		String s1 = (String)JOptionPane.showInputDialog(j,"수정할 도서/DVD의 제목을 입력하세요.","도서수정창",JOptionPane.PLAIN_MESSAGE);
+		String s2 = (String)JOptionPane.showInputDialog(j,"수정하고 싶은 요소를 선택하시오.\n","요소선택창",JOptionPane.PLAIN_MESSAGE,null, menu,"isbn");
+		String s3 = (String)JOptionPane.showInputDialog(j,s2+"에서 수정할 내용을 입력하세요.","수정창",JOptionPane.PLAIN_MESSAGE);
+		for(int i=0;i<cnt;i++) {
+			if(bookList.get(i).getTitle().equals(s1)&&bookList.get(i).getKind().equals("BOOK")) {
+				if(s2.equals("제목")) {
+					bookList.get(i).setTitle(s3);
+				}else if(s2.equals("저자")) {
+					bookList.get(i).setAuthor(s3);
+				}else if(s2.equals("가격")) {
+					bookList.get(i).setPrice(Integer.parseInt(s3));
+				}else if(s2.equals("출판년도")) {
+					bookList.get(i).setYear(Integer.parseInt(s3));
+				}else if(s2.equals("출판사")) {
+					bookList.get(i).setCompany(s3);
+				}else if(s2.equals("인기도")) {
+					bookList.get(i).setPop(Integer.parseInt(s3));
+				}else if(s2.equals("isbn")) {
+					bookList.get(i).setIsbn(s3);
+				}
+				j.setText("");
+				j.append("수정완료되었습니다.");
+			}else if(bookList.get(i).getTitle().equals(s1)&&bookList.get(i).getKind().equals("DVD")){
+				if(s2.equals("제목")) {
+					bookList.get(i).setTitle(s3);
+				}else if(s2.equals("저자")) {
+					bookList.get(i).setAuthor(s3);
+				}else if(s2.equals("가격")) {
+					bookList.get(i).setPrice(Integer.parseInt(s3));
+				}else if(s2.equals("출판년도")) {
+					bookList.get(i).setYear(Integer.parseInt(s3));
+				}else if(s2.equals("출판사")) {
+					bookList.get(i).setCompany(s3);
+				}else if(s2.equals("인기도")) {
+					bookList.get(i).setPop(Integer.parseInt(s3));
+				}else if(s2.equals("isbn")) {
+					bookList.get(i).setIsbn(s3);
+				}else if(s2.equals("상영시간")) {
+					((DVD) bookList.get(i)).setRunningtime(Integer.parseInt(s3));
+				}else if(s2.equals("연령제한")) {
+					((DVD) bookList.get(i)).setAge(Integer.parseInt(s3));
+				}else if(s2.equals("장르")) {
+					((DVD) bookList.get(i)).setGenre(s3);
+				}
+				j.setText("");
+				j.append("수정완료되었습니다.");
+			}
+		}
+	}
+	public void delete() {
+		String s = (String)JOptionPane.showInputDialog(j,"도서/DVD를 삭제하겠습니다. 삭제할 도서/DVD의 제목을 삭제입력창에 입력하시오.","도서삭제창",JOptionPane.PLAIN_MESSAGE);
+		String title = s;
+		for(int i=0;i<cnt;i++) {
+			if(bookList.get(i).getTitle().equals(title)) {
+				bookList.remove(i);
+				cnt--;
+				j.setText("");
+				j.append("삭제되었습니다.");
+			}
+		}
+	}
+	public void input() {
+		j.setText("");
+		FileInputStream fin = null;
+		ObjectInputStream ois = null;
+		FileInputStream fin_ = null;
+		ObjectInputStream ois_ = null;
+
+		try{
+			fin = new FileInputStream("booklist.dat");
+			ois = new ObjectInputStream(fin);
+			fin_ = new FileInputStream("id_book.dat");
+			ois_ = new ObjectInputStream(fin_);
+			
+			bookList = (ArrayList)ois.readObject();
+			id_book = (HashMap<String, String>)ois_.readObject();
+			j.append("파일로드완료\n");
+			cnt=bookList.size();
+		}catch(Exception ex){
+		}finally{
+			try{
+				ois.close();
+				fin.close();
+				ois_.close();
+				fin_.close();
+			}catch(IOException ioe){}
+		} // finally
+	}
+	public void output() {
+		j.setText("");
+		FileOutputStream fout = null;
+		ObjectOutputStream oos = null;
+		FileOutputStream fout_ = null;
+		ObjectOutputStream oos_ = null;
+		 
+		try{
+			fout = new FileOutputStream("booklist.dat");
+			oos = new ObjectOutputStream(fout);
+			fout_ = new FileOutputStream("id_book.dat");
+			oos_ = new ObjectOutputStream(fout_);
+			
+			oos.writeObject(bookList);
+			oos.reset();
+			oos.writeObject(bookList);
+			oos.reset();
+			oos_.writeObject(id_book);
+			oos_.reset();
+			oos_.writeObject(id_book);
+			oos_.reset();
+			
+			j.append("저장완료\n");
+			
+		}catch(Exception ex){
+		}finally{
+			try{
+				oos.close();
+				fout.close();
+				oos_.close();
+				fout_.close();
+			}catch(IOException ioe){}
+		} // finally
+	} 
+	public void search() {
+		j.setText("");
+		Object[] menu = {"isbn", "제목", "저자","가격","출판년도","출판사","인기도","상영시간","제한연령","장르"};
+		String s1 = (String)JOptionPane.showInputDialog(j,"검색하고 싶은 요소를 선택하시오.\n","요소선택창",JOptionPane.PLAIN_MESSAGE,null, menu,"isbn");
+		String s2 = (String)JOptionPane.showInputDialog(j,"도서/DVD를 검색하겠습니다. 검색할 도서/DVD의 "+s1+"을(를) 검색창에 입력하시오.","도서검색창",JOptionPane.PLAIN_MESSAGE);
+		if(s1.equals("제목")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getTitle().equals(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("저자")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getAuthor().equals(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("가격")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getPrice()==Integer.parseInt(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("출판년도")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getYear()==Integer.parseInt(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("출판사")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getCompany().equals(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("인기도")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getPop()==Integer.parseInt(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("isbn")) {
+			for(int i=0;i<cnt;i++) {
+				if(bookList.get(i).getIsbn().equals(s2)) {
+					j.append(bookList.get(i).toString());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("상영시간")) {
+			for(int i=0;i<cnt;i++) {
+				if(((DVD) bookList.get(i)).getRunningtime()==Integer.parseInt(s2)) {
+					j.append(((DVD) bookList.get(i)).dvd_string());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("제한연령")) {
+			for(int i=0;i<cnt;i++) {
+				if(((DVD) bookList.get(i)).getAge()==Integer.parseInt(s2)) {
+					j.append(((DVD) bookList.get(i)).dvd_string());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}else if(s1.equals("장르")) {
+			for(int i=0;i<cnt;i++) {
+				if(((DVD) bookList.get(i)).getGenre().equals(s2)) {
+					j.append(((DVD) bookList.get(i)).dvd_string());
+					bookList.get(i).plusSearch_cnt();
+				}
+			}
+		}
+	}
+	public void returned() {
+		String id = (String)JOptionPane.showInputDialog(j,"회원의 이름을 입력해주세요.\n","도서반납창",JOptionPane.PLAIN_MESSAGE);
+		String name = (String)JOptionPane.showInputDialog(j,"반납하실 도서의 제목을 입력해주세요.\n","도서반납창",JOptionPane.PLAIN_MESSAGE);
+		Collection collection = id_book.keySet();
+		Iterator iter = collection.iterator();
+		int tmp=0;
+		while(iter.hasNext()) {
+			String book = (String)iter.next();
+			String names = (String)id_book.get(book);
+			if(names.equals(id)&&book.equals(name)) {
+				id_book.remove(book);
+				for(int i=0;i<bookList.size();i++) {
+					if(bookList.get(i).getTitle().equals(name)&&bookList.get(i).getRental().equals("N")) {
+						bookList.get(i).setRental("Y");
+						j.setText("");
+						j.append("반납되었습니다.\n");
+						tmp++;
+						break;
+					}
+				}
+				if(tmp==0) {
+					j.setText("");
+					j.append("해당되는 도서/DVD가 존재하지 않거나, 회원정보가 존재하지 않습니다.");
+				}
+				break;
+			}
+		}
+	}
+	public static void main(String[] args) {
+		new BookManager();
+	}
+
+}

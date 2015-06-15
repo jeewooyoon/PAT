@@ -1,0 +1,110 @@
+package testproject;
+
+import java.io.Serializable;
+
+public class Book implements Serializable {
+	private String isbn;
+	private String title;
+	private String author;
+	private int price;
+	private int pub_year;
+	private String pub_company;
+	private int search_cnt;
+	private int pop;
+	private String rental;
+	private String rental_time;
+	private	String kind;
+	public Book(String kind, String isbn, String title, String author, int price, int pub_year, String pub_company, int pop, int search_cnt, String rental, String rental_time ){
+		this.kind = kind;
+		this.isbn = isbn;
+		this.title = title;
+		this.author = author;
+		this.price = price;
+		this.pub_year = pub_year;
+		this.pub_company = pub_company;
+		this.pop = pop;
+		this.search_cnt = search_cnt;
+		this.rental = rental;
+		this.rental_time=rental_time;
+	}
+	public String getKind() {
+		return kind;
+	}
+	public String getRentalTime() {
+		return rental_time;
+	}
+ 	public String getRental() {
+		return rental;
+	}
+	public String getCompany() {
+		return pub_company;
+	}
+	public int getSearch_cnt() {
+		return search_cnt;
+	}
+	public int getYear() {
+		return pub_year;
+	}
+	
+	public int getPop() {
+		return pop;
+	}
+	
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setRentalTime(String time) {
+		this.rental_time = time;
+	}
+	public void setCompany(String company) {
+		this.pub_company = company;
+	}
+	
+	public void setYear(int year) {
+		this.pub_year = year;
+	}
+	public void setRental(String rental) {
+		this.rental = rental;
+	}
+	public void setPop(int p) {
+		this.pop = p;
+	}
+	public void plusSearch_cnt() {
+		this.search_cnt= this.search_cnt+1;
+	}
+	public String toString(){
+		return "isbn :"+getIsbn()+"  "+"제목 :"+getTitle()+"  "+"저자 :"+getAuthor()+"  "+"가격 :"+getPrice()+"  "+"출판년도 :"+getYear()+"\n"+"출판사 :"+getCompany()+"  "+"인기도 :"+getPop()+"  "+"대출가능여부"+getRental()+"\n";
+	}
+	public String toString2() {
+		return "제목 :"+"  "+getTitle()+"  저자 :"+getAuthor()+"  대출가능여부 :"+getRental()+"\n";
+	}
+}
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;도서관관리/src/library&apos;&#x0A;- Original project: &apos;lib_2&apos;&#x0A;- Destination element: &apos;도서관관리/src/library&apos;&#x0A;- Original elements:&#x0A;     library.Book.java&#x0A;     library.BookObjectInputTest.java" description="Copy compilation units" destination="=도서관관리/src&lt;library" element1="/src&lt;library{Book.java" element2="/src&lt;library{BookObjectInputTest.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1433143330085" units="2" version="1.0"/>
+</session>
